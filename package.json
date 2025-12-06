@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "googleapis": "^144.0.0",
     "vite": "^7.2.4"
   },
   "dependencies": {

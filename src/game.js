@@ -194,23 +194,7 @@ function highlightSquare(square, type) {
 }
 
 let selectedSquare = null
-let escHintElement = null
 
-function showEscHint() {
-  if (!escHintElement) {
-    escHintElement = document.createElement('div')
-    escHintElement.className = 'esc-hint'
-    escHintElement.innerHTML = 'Press <kbd>ESC</kbd> or click another piece to cancel'
-    document.body.appendChild(escHintElement)
-  }
-  setTimeout(() => escHintElement.classList.add('show'), 50)
-}
-
-function hideEscHint() {
-  if (escHintElement) {
-    escHintElement.classList.remove('show')
-  }
-}
 
 let isDragging = false
 
@@ -244,35 +228,15 @@ function onDragStart(source, piece, position, orientation) {
   }
 
   isDragging = true
-  // Show hint when piece is selected
-  showEscHint()
 }
 
 function onSnapEnd() {
   board.position(game.fen())
   selectedSquare = null
   isDragging = false
-  hideEscHint()
 }
 
-// Add ESC key listener to cancel piece selection
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (isDragging) {
-      // If actively dragging, do NOT call board.position() as it causes duplication
-      // Just hide the hint - the piece will snap back when dropped
-      hideEscHint()
-      return
-    }
 
-    if (selectedSquare) {
-      removeHighlights()
-      board.position(game.fen()) // Reset board to deselect piece
-      selectedSquare = null
-      hideEscHint()
-    }
-  }
-})
 
 function updateStatus() {
   let status = ''
@@ -408,13 +372,39 @@ let currentPlayerColor = null
 let currentRoomId = null
 let currentRoomData = null
 
+function createBoard() {
+  if (board && board.destroy) {
+    board.destroy()
+  }
+
+  // If destroy isn't available or didn't work, clear the container
+  if (!board || !board.destroy) {
+    $('#board').empty()
+  }
+
+  board = Chessboard('board', boardConfig)
+
+  if (currentPlayerColor === 'black') {
+    board.orientation('black')
+  }
+
+  // Restore position
+  if (game) {
+    board.position(game.fen(), false)
+  }
+
+  updateStatus()
+
+  // Re-attach resize listener if needed (though window listener persists)
+  window.dispatchEvent(new Event('resize'))
+}
+
 export function initGame(mode = { mode: 'create' }) {
   currentPlayerColor = mode.color
   currentRoomId = mode.roomId
 
   $(function () {
-    board = Chessboard('board', boardConfig)
-    updateStatus()
+    createBoard()
 
     if (mode.roomId) {
       // Setup real-time sync
@@ -552,6 +542,16 @@ async function setupRealTimeSync(mode) {
 
 // onDrop function with database sync
 function onDrop(source, target) {
+  // If dropped on same square, it's a cancellation/deselection
+  if (source === target) {
+    removeHighlights()
+    selectedSquare = null
+    isDragging = false
+    return 'snapback'
+  }
+
+  isDragging = false // Drag ended
+
   isDragging = false // Drag ended
 
   // If in multiplayer mode, check turn
@@ -654,7 +654,6 @@ function onDrop(source, target) {
   }
 
   updateStatus()
-  hideEscHint() // Hide hint after move
 }
 
 // Cleanup on page unload

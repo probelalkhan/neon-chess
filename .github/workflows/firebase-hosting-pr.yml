@@ -1,0 +1,50 @@
+name: Deploy PR Preview to Firebase Hosting
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Deploy to Firebase Preview Channel
+        id: firebase-deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEON_CHESS_6758E }}
+          projectId: neon-chess-6758e
+          expires: 7d
+      
+      - name: Authorize Preview Domain
+        if: steps.firebase-deploy.outputs.details_url
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEON_CHESS_6758E }}
+        run: |
+          # Extract the actual preview domain from Firebase deployment
+          PREVIEW_URL="${{ steps.firebase-deploy.outputs.details_url }}"
+          PREVIEW_DOMAIN=$(echo "$PREVIEW_URL" | sed -E 's|https?://([^/]+).*|\1|')
+          
+          echo "🌐 Preview URL: $PREVIEW_URL"
+          echo "🌐 Preview domain: $PREVIEW_DOMAIN"
+          node scripts/add-auth-domain.js "$PREVIEW_DOMAIN"
