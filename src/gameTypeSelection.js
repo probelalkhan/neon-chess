@@ -5,7 +5,10 @@ import { getCurrentUser } from './auth.js'
 export function renderGameTypeSelectionPage() {
   return `
     <div class="selection-container">
-      <button id="back-to-login" class="back-btn">← Sign Out</button>
+      <div class="top-controls">
+        <button id="back-to-login" class="back-btn">← Sign Out</button>
+        <button id="fullscreen-btn" class="fullscreen-btn">⤢ Full Screen</button>
+      </div>
       
       <div class="selection-header">
         <h1 class="selection-title">Choose Your Game</h1>
@@ -174,5 +177,30 @@ export function initGameTypeSelectionPage(onNavigate) {
     if (matchmakingUnsubscribe) matchmakingUnsubscribe()
     const { signOutUser } = await import('./auth.js')
     await signOutUser()
+  })
+
+  // Full Screen Toggle
+  const fullscreenBtn = document.getElementById('fullscreen-btn')
+  fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`)
+      })
+      fullscreenBtn.textContent = '↙ Exit Full Screen'
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+        fullscreenBtn.textContent = '⤢ Full Screen'
+      }
+    }
+  })
+
+  // Listen for fullscreen change events to update button text if exited via Escape key
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      fullscreenBtn.textContent = '⤢ Full Screen'
+    } else {
+      fullscreenBtn.textContent = '↙ Exit Full Screen'
+    }
   })
 }
