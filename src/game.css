@@ -377,3 +377,100 @@ h1 {
   font-family: 'Orbitron', monospace;
   font-weight: 700;
 }
+
+/* Landscape Overlay Styles */
+#landscape-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay-content {
+  color: var(--neon-blue);
+  font-family: 'Orbitron', sans-serif;
+  padding: 2rem;
+}
+
+.rotate-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+#landscape-overlay h2 {
+  color: var(--neon-pink);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+#landscape-overlay p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+
+/* Enforce Landscape on Mobile < 1024px */
+@media (orientation: portrait) and (max-width: 1024px) {
+  #landscape-overlay {
+    display: flex;
+  }
+}
+
+/* Mobile Landscape Tweaks */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  #app {
+    flex-direction: row;
+  }
+
+  #game-container {
+    width: 70%;
+  }
+
+  #sidebar {
+    width: 30%;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .user-email {
+    font-size: 0.8rem;
+  }
+
+  .leave-room-btn,
+  .signout-btn {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
+}
