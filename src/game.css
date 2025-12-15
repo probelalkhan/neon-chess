@@ -463,49 +463,57 @@ h1 {
   box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
 }
 
-/* Mobile Landscape Tweaks (Updated for better sidebar usage) */
+/* Mobile Landscape Tweaks (Compact Sidebar) */
 @media screen and (orientation: landscape) and (max-height: 600px) {
   #app {
     flex-direction: row;
   }
 
-  /* Make sidebar wider to use "wasted space" */
+  /* Make sidebar wider (45%) to fit content horizontally */
   #game-container {
-    width: 60%;
+    width: 55%;
+    padding: 0;
   }
 
   #sidebar {
-    width: 40%;
-    padding: 1rem;
+    width: 45%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center vertically if space allows */
+    overflow-y: hidden;
+    /* Prevent scrolling if possible */
   }
 
+  /* Compact Header */
   h1 {
-    font-size: 1.8rem;
-    /* Larger font */
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    display: inline-block;
+    /* Or hide if too tight */
+  }
+
+  /* Compact User Info */
+  .user-info {
+    flex-direction: row;
+    padding: 0.4rem;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+    gap: 1rem;
   }
 
   .user-avatar {
-    width: 50px;
-    /* Larger avatar */
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   .user-email {
-    font-size: 1rem;
-    /* Larger font */
-  }
 
-  /* Compact buttons */
-  .leave-room-btn,
-  .signout-btn,
-  .game-fullscreen-btn {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  /* Room Code bigger */
-  .room-code-small {
-    font-size: 1.4rem;
+    /* Room Code bigger */
+    .room-code-small {
+      font-size: 1.4rem;
+    }
   }
 }

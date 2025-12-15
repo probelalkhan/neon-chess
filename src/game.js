@@ -41,7 +41,7 @@ function getPieceTheme(piece) {
     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
       <defs>
         <filter id="glow-${color}" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+          <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
           <feMerge>
             <feMergeNode in="coloredBlur"/>
             <feMergeNode in="SourceGraphic"/>
@@ -50,7 +50,7 @@ function getPieceTheme(piece) {
       </defs>
       <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" 
             font-size="45" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
-            fill="${fill}" stroke="${stroke}" stroke-width="1"
+            fill="${fill}" stroke="${stroke}" stroke-width="0.5"
             filter="url(#glow-${color})">
         ${unicodeChar}
       </text>
