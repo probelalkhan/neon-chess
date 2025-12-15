@@ -377,3 +377,143 @@ h1 {
   font-family: 'Orbitron', monospace;
   font-weight: 700;
 }
+
+/* Landscape Overlay Styles */
+#landscape-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay-content {
+  color: var(--neon-blue);
+  font-family: 'Orbitron', sans-serif;
+  padding: 2rem;
+}
+
+.rotate-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+#landscape-overlay h2 {
+  color: var(--neon-pink);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+#landscape-overlay p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+
+/* Enforce Landscape on Mobile < 1024px */
+@media (orientation: portrait) and (max-width: 1024px) {
+  #landscape-overlay {
+    display: flex;
+  }
+}
+
+/* Game Full Screen Button */
+.game-fullscreen-btn {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: auto;
+  /* Push to bottom near leave button */
+  margin-bottom: 0.5rem;
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 8px;
+  color: var(--neon-blue);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.game-fullscreen-btn:hover {
+  background: rgba(0, 243, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+/* Mobile Landscape Tweaks (Compact Sidebar) */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  #app {
+    flex-direction: row;
+  }
+
+  /* Make sidebar wider (45%) to fit content horizontally */
+  #game-container {
+    width: 55%;
+    padding: 0;
+  }
+
+  #sidebar {
+    width: 45%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center vertically if space allows */
+    overflow-y: hidden;
+    /* Prevent scrolling if possible */
+  }
+
+  /* Compact Header */
+  h1 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    display: inline-block;
+    /* Or hide if too tight */
+  }
+
+  /* Compact User Info */
+  .user-info {
+    flex-direction: row;
+    padding: 0.4rem;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .user-email {
+
+    /* Room Code bigger */
+    .room-code-small {
+      font-size: 1.4rem;
+    }
+  }
+}
