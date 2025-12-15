@@ -41,7 +41,7 @@ function getPieceTheme(piece) {
     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
       <defs>
         <filter id="glow-${color}" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+          <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
           <feMerge>
             <feMergeNode in="coloredBlur"/>
             <feMergeNode in="SourceGraphic"/>
@@ -340,7 +340,43 @@ function initSidebar(mode, roomData) {
     window.location.reload() // Go back to selection
   })
 
-  // Sign out button
+  // Full Screen Button logic
+  const $fullscreenBtn = $('#game-fullscreen-btn')
+  if ($fullscreenBtn.length === 0) {
+    // Inject button if not present (it should be in HTML or we append it)
+    // Let's look for where buttons are and append it
+    const $controlsParams = $('#sidebar')
+    // creating button dynamically
+    const btnHtml = `<button id="game-fullscreen-btn" class="game-fullscreen-btn">⤢ Full Screen</button>`
+    $(btnHtml).insertBefore('#leave-room-btn')
+
+    // Re-select
+    $('#game-fullscreen-btn').on('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable fullscreen: ${err.message}`)
+        })
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        }
+      }
+    })
+
+    // Update button text on change
+    document.addEventListener('fullscreenchange', () => {
+      const btn = document.getElementById('game-fullscreen-btn')
+      if (btn) {
+        if (!document.fullscreenElement) {
+          btn.textContent = '⤢ Full Screen'
+        } else {
+          btn.textContent = '↙ Exit Full Screen'
+        }
+      }
+    })
+  }
+
+  // Sign Out button
   $('#signout-btn').on('click', async () => {
     if (mode.roomId) {
       await leaveRoom(mode.roomId)

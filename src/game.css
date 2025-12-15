@@ -438,39 +438,74 @@ h1 {
   }
 }
 
-/* Mobile Landscape Tweaks */
-@media screen and (orientation: landscape) and (max-height: 500px) {
+/* Game Full Screen Button */
+.game-fullscreen-btn {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: auto;
+  /* Push to bottom near leave button */
+  margin-bottom: 0.5rem;
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 8px;
+  color: var(--neon-blue);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.game-fullscreen-btn:hover {
+  background: rgba(0, 243, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+/* Mobile Landscape Tweaks (Updated for better sidebar usage) */
+@media screen and (orientation: landscape) and (max-height: 600px) {
   #app {
     flex-direction: row;
   }
 
+  /* Make sidebar wider to use "wasted space" */
   #game-container {
-    width: 70%;
+    width: 60%;
   }
 
   #sidebar {
-    width: 30%;
+    width: 40%;
     padding: 1rem;
-    font-size: 0.8rem;
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    /* Larger font */
     margin-bottom: 1rem;
   }
 
   .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    /* Larger avatar */
+    height: 50px;
   }
 
   .user-email {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    /* Larger font */
   }
 
+  /* Compact buttons */
   .leave-room-btn,
-  .signout-btn {
-    padding: 0.4rem;
-    font-size: 0.8rem;
+  .signout-btn,
+  .game-fullscreen-btn {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  /* Room Code bigger */
+  .room-code-small {
+    font-size: 1.4rem;
   }
 }
